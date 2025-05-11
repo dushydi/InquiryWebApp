@@ -161,3 +161,8 @@
 /Users/user/RiderProjects/InquiryWeb/InquiryWeb/obj/Debug/net9.0/InquiryWeb.pdb
 /Users/user/RiderProjects/InquiryWeb/InquiryWeb/obj/Debug/net9.0/InquiryWeb.genruntimeconfig.cache
 /Users/user/RiderProjects/InquiryWeb/InquiryWeb/obj/Debug/net9.0/ref/InquiryWeb.dll
+/Users/user/RiderProjects/InquiryWeb/InquiryWeb/bin/Debug/net9.0/Microsoft.OpenApi.dll
+/Users/user/RiderProjects/InquiryWeb/InquiryWeb/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
+/Users/user/RiderProjects/InquiryWeb/InquiryWeb/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/Users/user/RiderProjects/InquiryWeb/InquiryWeb/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/user/RiderProjects/InquiryWeb/InquiryWeb/obj/Debug/net9.0/InquiryWeb.MvcApplicationPartsAssemblyInfo.cs

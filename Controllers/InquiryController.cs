@@ -2,65 +2,74 @@ using InquiryWeb.Models;
 using InquiryWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InquiryWeb.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
-public class InquiryController : ControllerBase
+namespace InquiryWeb.Controllers
 {
-    private readonly InquiryService _inquiryService;
-
-    public InquiryController(InquiryService inquiryService)
+    [Route("api/[controller]")]
+    [ApiController] // Automatically validates the model
+    public class InquiryController : ControllerBase
     {
-        _inquiryService = inquiryService;
-    }
+        private readonly InquiryService _inquiryService;
 
-    // Get all inquiries
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Inquiry>>> GetAllInquiries()
-    {
-        var inquiries = await _inquiryService.GetAllInquiriesAsync();
-        return Ok(inquiries);
-    }
-
-    // Get a specific inquiry by ID
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Inquiry>> GetInquiry(int id)
-    {
-        var inquiry = await _inquiryService.GetInquiryByIdAsync(id);  // Corrected method name here
-        if (inquiry == null)
+        public InquiryController(InquiryService inquiryService)
         {
-            return NotFound();
+            _inquiryService = inquiryService;
         }
 
-        return Ok(inquiry);
-    }
-
-    // Add a new inquiry
-    [HttpPost]
-    public async Task<ActionResult<Inquiry>> AddInquiry(Inquiry inquiry)
-    {
-        await _inquiryService.AddInquiryAsync(inquiry);
-        return CreatedAtAction(nameof(GetInquiry), new { id = inquiry.Id }, inquiry);  // Ensure it refers to 'GetInquiry'
-    }
-
-    // Update an existing inquiry
-    [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateInquiry(int id, Inquiry inquiry)
-    {
-        if (id != inquiry.Id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Inquiry>>> GetAllInquiries()
         {
-            return BadRequest();
+            var inquiries = await _inquiryService.GetAllInquiriesAsync();
+            return Ok(inquiries);
         }
-        await _inquiryService.UpdateInquiryAsync(inquiry);
-        return NoContent();
-    }
 
-    // Delete an inquiry
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteInquiry(int id)
-    {
-        await _inquiryService.DeleteInquiryAsync(id);
-        return NoContent();
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Inquiry>> GetInquiry(int id)
+        {
+            var inquiry = await _inquiryService.GetInquiryByIdAsync(id);
+            if (inquiry == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(inquiry);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Inquiry>> AddInquiry(Inquiry inquiry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Don't set the Id manually; let EF handle it automatically
+            await _inquiryService.AddInquiryAsync(inquiry);
+            return CreatedAtAction(nameof(GetInquiry), new { id = inquiry.Id }, inquiry);
+        }
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateInquiry(int id, Inquiry inquiry)
+        {
+            if (id != inquiry.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid) // Ensures validation is respected
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _inquiryService.UpdateInquiryAsync(inquiry);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteInquiry(int id)
+        {
+            await _inquiryService.DeleteInquiryAsync(id);
+            return NoContent();
+        }
     }
 }
