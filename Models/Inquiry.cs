@@ -18,5 +18,10 @@ namespace InquiryWeb.Models
         public int Age { get; set; }
 
         public DateTime Date { get; set; }
+        
+        [Required(ErrorMessage = "Inquiry message is required.")]
+        [StringLength(200,ErrorMessage = "Inquiry description should be less than 200 characters.")]
+        public string Message { get; set; }
+        
     }
 }
